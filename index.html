@@ -1,0 +1,32 @@
+import pandas as pd
+from fpdf import FPDF
+
+data = pd.read_csv("/storage/emulated/0/pydroid3/student_data.csv")
+
+average = data['Marks'].mean()
+highest = data['Marks'].max()
+lowest = data['Marks'].min()
+
+pdf = FPDF()
+pdf.add_page()
+pdf.set_font("Arial", size=12)
+
+pdf.cell(200, 10, txt="Student Marks Report", ln=True, align='C')
+pdf.ln(10)
+
+pdf.cell(100, 10, "Name", 1)
+pdf.cell(50, 10, "Marks", 1)
+pdf.ln()
+
+for i in range(len(data)):
+    pdf.cell(100, 10, data["Name"][i], 1)
+    pdf.cell(50, 10, str(data["Marks"][i]), 1)
+    pdf.ln()
+
+pdf.ln(10)
+pdf.cell(200, 10, txt=f"Average Marks: {average:.2f}", ln=True)
+pdf.cell(200, 10, txt=f"Highest Marks: {highest}", ln=True)
+pdf.cell(200, 10, txt=f"Lowest Marks: {lowest}", ln=True)
+
+pdf.output("/storage/emulated/0/pydroid3/report.pdf")
+print("✅ Report Created Successfully!")
